@@ -71,4 +71,5 @@ This is mainly because of memoization, which saves the solutions for every uniqu
 
 The Held-Karp algorithm shows a dynamic programming approach to solving the TSP, addressing the challenge of identifying the shortest route connecting all cities. It divides this complex problem into smaller, more manageable pieces, enabling a step-by-step discovery of the shortest path and using memoization to boost efficiency by avoiding repeat work.
 
-Reference: https://www.geeksforgeeks.org/travelling-salesman-problem-using-dynamic-programming/
+References: https://www.geeksforgeeks.org/travelling-salesman-problem-using-dynamic-programming/
+https://stackoverflow.com/questions/69902373/can-you-help-explain-this-held-karp-tsp-pseudocode
