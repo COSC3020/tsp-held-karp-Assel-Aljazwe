@@ -1,6 +1,6 @@
 function tsp_hk(distance_matrix) {
     const n = distance_matrix.length;
-    const memo = new Map(); // Use a map for flexible key handling
+    const memo = new Map(); // map for flexible key handling
 
     function getKey(city, visited) {
         return city + ',' + visited;
