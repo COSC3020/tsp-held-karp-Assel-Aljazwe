@@ -1,34 +1,46 @@
 function tsp_hk(distance_matrix) {
-  const n = distance_matrix.length;
-  const memo = Array.from({ length: n }, () => Array(1 << n).fill(-1));
+    const n = distance_matrix.length;
+    const memo = new Map(); // Use a map for flexible key handling
 
-  // Helper function to find the shortest path
-  function visit(city, visited) {
-    if (visited === (1 << n) - 1) {
-      return distance_matrix[city][0]; // Return to start city
-    }
-    if (memo[city][visited] !== -1) {
-      return memo[city][visited];
+    function getKey(city, visited) {
+        return city + ',' + visited;
     }
 
-    let minDistance = Infinity;
-    for (let nextCity = 0; nextCity < n; nextCity++) {
-      // Check if the city has been visited
-      if (!(visited & (1 << nextCity))) {
-        const distance = distance_matrix[city][nextCity] + visit(nextCity, visited | (1 << nextCity));
-        minDistance = Math.min(minDistance, distance);
-      }
+    // Helper function for the Held-Karp algorithm
+    function visit(city, visited) {
+        if (visited === (1 << n) - 1) {
+            return 0; // End tour without returning to the start city
+        }
+
+        const key = getKey(city, visited);
+        if (memo.has(key)) {
+            return memo.get(key);
+        }
+
+        let minDistance = Infinity;
+        for (let nextCity = 0; nextCity < n; nextCity++) {
+            if (!(visited & (1 << nextCity))) {
+                const newVisited = visited | (1 << nextCity);
+                const distanceToNextCity = distance_matrix[city][nextCity];
+                const totalDistance = distanceToNextCity + visit(nextCity, newVisited);
+
+                minDistance = Math.min(minDistance, totalDistance);
+            }
+        }
+
+        memo.set(key, minDistance);
+        return minDistance;
     }
 
-    memo[city][visited] = minDistance;
-    return minDistance;
-  }
+    let shortestTour = Infinity;
+    // Considering all cities as starting points
+    for (let startCity = 0; startCity < n; startCity++) {
+        const visited = 1 << startCity;
+        const tourDistance = visit(startCity, visited);
+        shortestTour = Math.min(shortestTour, tourDistance);
+    }
 
-  // Start the tour from each city and return the minimum
-  let result = Infinity;
-  for (let startCity = 0; startCity < n; startCity++) {
-    result = Math.min(result, visit(startCity, 1 << startCity));
-  }
-  return result;
+    return shortestTour;
 }
+
 
