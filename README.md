@@ -47,3 +47,26 @@ Test your new function; I've provided some basic testing code in `code.test.js`.
 What is the worst-case asymptotic time complexity of your implementation? What
 is the worst-case asymptotic memory complexity? Add your answer, including your
 reasoning, to this markdown file.
+
+# Runtime Analysis
+
+## Time Complexity
+
+- **State Exploration**: The algorithm's core operation is exploring states defined by subsets of cities (with $\(2^n\)$ possible subsets due to $\(n\)$ cities) and selecting each city as a potential starting point. This results in a total of $\(n \times 2^n\)$ unique states.
+  
+- **Per-State Operations**: For each state, the algorithm must decide on the next city to visit, considering up to $\(n-1\)$ possibilities (as it doesn't revisit the starting city within a state). The decision involves calculating the minimum distance from the current subset configuration to the next city, which is a linear operation with respect to $\(n\)$.
+
+The **time complexity**, therefore, is: $$Θ(n^2 \times 2^n)\$$ This reflects the algorithm's thorough approach, examining all subsets of cities and calculating the optimal route within each subset by considering all possible next cities.
+
+## Memory Complexity
+
+- **Memoization Strategy**: To avoid recalculating distances for previously encountered states, the algorithm uses memoization, storing the shortest distance for each combination of a starting city and visited cities subset. Given $\(n\)$ cities and $\(2^n\)$ subsets, the memoization requires storage for $\(n \times 2^n\)$ entries, thus being the primary factor in memory usage.
+  
+- **Recursion**: The recursive nature of the algorithm also impacts the memory through the call stack. The call stack can grow up to $\(n\)$ levels, corresponding to the maximum number of cities to be visited in sequence. However, compared to memoization storage, the recursion stack's memory impact is minimal.
+
+Thus, the algorithm’s **memory complexity** is: $$Θ(n \times 2^n)\$$ 
+This is mainly because of memoization, which saves the solutions for every unique state the algorithm encountered while running.
+
+### Conclusion
+
+The Held-Karp algorithm shows a dynamic programming approach to solving the TSP, addressing the challenge of identifying the shortest route connecting all cities. It divides this complex problem into smaller, more manageable pieces, enabling a step-by-step discovery of the shortest path and using memoization to boost efficiency by avoiding repeat work.
