@@ -1,22 +1,26 @@
 function tsp_hk(distance_matrix) {
     const n = distance_matrix.length;
-    const memo = new Map(); // map for flexible key handling
-
+    // memoization storage to cache solutions
+    const memo = new Map(); 
+    
+    // unique key for each state for memoization
     function getKey(city, visited) {
         return city + ',' + visited;
     }
 
-    // Helper function for the Held-Karp algorithm
+    // Recursive Helper function for the Held-Karp algorithm
     function visit(city, visited) {
         if (visited === (1 << n) - 1) {
             return 0; // End tour without returning to the start city
         }
 
+        // get memoized result if this state has already been solved.
         const key = getKey(city, visited);
         if (memo.has(key)) {
             return memo.get(key);
         }
 
+        // explore all possible next cities and calculate minimum distance.
         let minDistance = Infinity;
         for (let nextCity = 0; nextCity < n; nextCity++) {
             if (!(visited & (1 << nextCity))) {
